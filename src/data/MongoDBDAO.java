@@ -77,6 +77,23 @@ public class MongoDBDAO {
 		return resultStr;
 	}
 	
+	public String getInstituicoesByRequest(String request) {
+		MongoCollection<Document> coll = db.getCollection("instituicoes");
+		Pattern regex = Pattern.compile(request, Pattern.CASE_INSENSITIVE);
+		
+        List<Document> results = coll.find(
+        	elemMatch("pedidos", eq("nome", regex))
+        ).into(new ArrayList<Document>());
+
+        String resultStr = "[";
+        for (int i = 0; i < results.size()-1; i++) {
+        	resultStr += JSONtoString(results.get(i)) + ",";
+        }
+        resultStr += "]";
+        
+		return resultStr;
+	}
+	
 	private String JSONtoString(Document document) {
 		JsonWriter jsonWriter = new JsonWriter(new StringWriter(),
                 new JsonWriterSettings(JsonMode.SHELL, true));
