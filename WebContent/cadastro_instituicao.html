@@ -6,8 +6,9 @@
                 const obj = {action: "cadastrar"}
                 obj.nome = document.getElementById("inputNome").value;
                 obj.cnpj = document.getElementById("inputCNPJ").value;
-                obj.telefone = document.getElementById("inputTelefone1").value;
-                //obj.telefone = document.getElementById("inputTelefone2").value;
+                obj.telefone = [];
+                obj.telefone.push(document.getElementById("inputTelefone1").value);
+                obj.telefone.push(document.getElementById("inputTelefone2").value);
                 obj.email = document.getElementById("inputEmail").value;
                 obj.nomeRede = document.getElementById("inputNomeRede").value;
                 obj.enderecoRede = document.getElementById("inputEnderecoRede").value;
@@ -32,6 +33,7 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(this.responseText);
+                        window.location="/index.html";
                     }
                 };
                 

@@ -59,7 +59,7 @@ public class MongoDBDAO {
 	
 	public String getInstituicaoById(String id) {
 		MongoCollection<Document> coll = db.getCollection("instituicoes");
-        List<Document> results = coll.find(eq("_id", id)).into(new ArrayList<Document>());
+        List<Document> results = coll.find(eq("_id", new ObjectId(id))).into(new ArrayList<Document>());
         String resultStr = JSONtoString(results.get(0));
         
 		return resultStr;

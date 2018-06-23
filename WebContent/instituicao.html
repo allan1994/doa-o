@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="br">
     <head>
+        <script>
+            const url = new URL(document.location.href);
+            const id = url.searchParams.get("id");
+
+            const action = "getInstituicao";
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open("POST", "DoacaoServer", true);  
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);
+                    updateFields(JSON.parse(swapObjectId(this.responseText)));
+                }
+            };
+
+            var params = "action=" + action + "&id=" + id;
+            console.log(params);
+
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+            xhttp.send(params);
+
+            function swapObjectId(text) {
+                while (/ObjectId\(("\w*")\)/.test(text)) {
+                    const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+                    text = text.replace(/ObjectId\(("\w*")\)/, id);
+                }
+                console.log(text);
+                return text;
+            }
+
+            function updateFields(jsonResult) {
+                let telefones = "";
+                for (const tel of jsonResult.telefone) telefones += "<p>" + tel + "</p>";
+
+                document.getElementById("NomeInstituicao").innerHTML = jsonResult.nome;
+                document.getElementById("dataFund").innerHTML = jsonResult.dataFundacao;
+                document.getElementById("descricao").innerHTML = jsonResult.descricao
+                document.getElementById("telefone").innerHTML = telefones;
+                document.getElementById("email").innerHTML = jsonResult.email;
+                document.getElementById("nomeBanco").innerHTML = jsonResult.banco;
+                document.getElementById("agenciaBancaria").innerHTML = jsonResult.agencia;
+                document.getElementById("contaBancaria").innerHTML = jsonResult.conta;
+                document.getElementById("tags").innerHTML = jsonResult.tags;
+            }
+        </script>
+
         <title>DoAção - Te ajudando a doar</title>
         <!--meta tags -->
         <meta charset="UTF-8">
@@ -64,49 +111,43 @@
                     <div class="aboutright">
                         <h4 id="NomeInstituicao"> Instituição Juvinal Firandito</h4>
                         <br>
-                        <h5>Fundada em 20/02/1994</h5>
+                        <h5 id="dataFund">Fundada em 20/02/1994</h5>
                     </div>
                     <div class="about-jst-right">
-                        <p>Com o propósito de resgatar o culto aos símbolos pátrios, o Instituto Juvino Barreto 
-                            juntamente com o Corpo de Bombeiros Militar, realizaram nesta quinta-feira, 11 de novembro de 2010, 
-                            uma cerimônia para marcar o primeiro Hasteamento do Pavilhão Nacional no IJB. Esta ação que presenciamos, 
-                            marcará o início de uma série de atividades que ocorrerão todas as quintas-feiras nesta Instituição.
-                        </p>
-                        <p> O Instituto Juvino Barreto através so Sr Kerginaldo Jacob de Medeiros - Diretor Presidente e o Corpo de 
-                            Bombeiros do Rio Grande do Norte, através do seu Comandante Geral, o Sr. Coronel Carlos Kleber Lopes Barbosa, 
-                            agradecem a presença de todos nesta solenidade. 
-                        </p>
+                        <div id="descricao">
+                            <p>Com o propósito de resgatar o culto aos símbolos pátrios, o Instituto Juvino Barreto 
+                                juntamente com o Corpo de Bombeiros Militar, realizaram nesta quinta-feira, 11 de novembro de 2010, 
+                                uma cerimônia para marcar o primeiro Hasteamento do Pavilhão Nacional no IJB. Esta ação que presenciamos, 
+                                marcará o início de uma série de atividades que ocorrerão todas as quintas-feiras nesta Instituição.
+                            </p>
+                            <p> O Instituto Juvino Barreto através so Sr Kerginaldo Jacob de Medeiros - Diretor Presidente e o Corpo de 
+                                Bombeiros do Rio Grande do Norte, através do seu Comandante Geral, o Sr. Coronel Carlos Kleber Lopes Barbosa, 
+                                agradecem a presença de todos nesta solenidade. 
+                            </p>
+                        </div>
                         <br>
                         <p>
-                            Telefone para contato:
+                            Telefones para contato:
+                            <span id="telefone">
+                            </span>
                         </p>
-                        <div id="telefone1">
-                            (84) 00000-0000
-                        </div>
-
-                        <div id="telefone2">
-                            (84) 00000-0000
-                        </div>
-                        <div id="telefone3">
-                            (84) 00000-0000
-                        </div>
                         <br>
                         <p>
                             Email:
+                            <span id="email">
+                                adfhkasj@hjaksdf.com
+                            </span>
                         </p>
-                        <div id="EmailInstituicao">
-                             adfhkasj@hjaksdf.com
-                        </div>
                         <br>
                         <p>
                             Conta Bancária:
                         </p>
-                        <div id="NomeBanco">Banco </div>
-                        <div id="AgenciaBancaria">Agencia: 1111-1</div>
-                        <div id="ContaBancaria">Conta: 11111-1</div>
+                        <div id="nomeBanco">Banco </div>
+                        <div id="agenciaBancaria">Agencia: 1111-1</div>
+                        <div id="contaBancaria">Conta: 11111-1</div>
                         <br>
                         <p>
-                            Tags:<div id="Tags">Crianças</div>
+                            Tags:<span id="tags">Crianças</span>
                         </p>
                     </div>
                 </div>

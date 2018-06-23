@@ -23,8 +23,12 @@
             }
 
             function swapObjectId(text) {
-                const id = /ObjectId\(("\w*")\)/.exec(text)[1];
-                return text.replace(/ObjectId\(("\w*")\)/, id);
+                while (/ObjectId\(("\w*")\)/.test(text)) {
+                    const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+                    text = text.replace(/ObjectId\(("\w*")\)/, id);
+                }
+                console.log(text);
+                return text;
             }
 
             function updateSearchFields(jsonResult) {
@@ -32,7 +36,7 @@
                 for (let res of jsonResult) {
                     final += "<tr>";
                     final += "<td>" + res.nome + "</td>";
-                    final += "<td>" + res.telefone + "</td>";
+                    final += "<td>" + (res.telefone == undefined) ? "" : res.telefone[0] + "</td>";
                     final += "<td><a href=instituicao.html?id=" + res._id + " style=\"color: #000;\"><i class=\"fa fa-plus\"></i></a></td>"
                     final += "</tr>";
                 }
