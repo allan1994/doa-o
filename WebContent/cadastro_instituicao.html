@@ -6,7 +6,8 @@
                 const obj = {action: "cadastrar"}
                 obj.nome = document.getElementById("inputNome").value;
                 obj.cnpj = document.getElementById("inputCNPJ").value;
-                obj.telefone = document.getElementById("inputTelefone").value;
+                obj.telefone = document.getElementById("inputTelefone1").value;
+                //obj.telefone = document.getElementById("inputTelefone2").value;
                 obj.email = document.getElementById("inputEmail").value;
                 obj.nomeRede = document.getElementById("inputNomeRede").value;
                 obj.enderecoRede = document.getElementById("inputEnderecoRede").value;
@@ -125,10 +126,16 @@
                     <br>
                     <div class="about-jst-right">
                         <br>
-                        <h4> Telefone: </h4>
+                        <h4> Telefone 1: </h4>
                     </div>
                     <br>
-                    <input id="inputTelefone" style="width: 20%;"></input>
+                    <input id="inputTelefone1" style="width: 20%;">
+                    <div class="about-jst-right">
+                        <br>
+                        <h4> Telefone 2: </h4>
+                    </div>
+                    <br>
+                    <input id="inputTelefone2" style="width: 20%;">
                     <div class="about-jst-right">
                         <br>
                         <h4> Email: </h4>
@@ -137,16 +144,19 @@
                     <input id="inputEmail" type="email" style="width: 20%;">
                     <br><br>
                     <h3>Redes Sociais:</h3>
+                    <input id="inputNomeRede" value="facebook" hidden="">
+                    <br>
                     <div class="about-jst-right">
                         <br>
-                        <h4> Nome: </h4>
+                        <h4> Facebook: </h4>
                     </div>
                     <br>
-                    <input id="inputNomeRede" style="width: 20%;">
+                    <input id="inputEnderecoRede" style="width: 20%;">
+                    <input id="inputNomeRede" value="twitter" hidden="">
                     <br>
                     <div class="about-jst-right">
                         <br>
-                        <h4> Endereço: </h4>
+                        <h4> Twitter: </h4>
                     </div>
                     <br>
                     <input id="inputEnderecoRede" style="width: 20%;">
@@ -154,11 +164,11 @@
                     <h3>Localização:</h3>
                     <div class="about-jst-right">
                         <br>
-                        <h4> Estado: </h4>
+                        <h4> Rua: </h4>
                     </div>
                     <br>
-                    <input id="inputEstado" style="width: 20%;">
-                    <br>
+                    <input id="inputRua" style="width: 20%;">
+                    <br>                    
                     <div class="about-jst-right">
                         <br>
                         <h4> Cidade: </h4>
@@ -172,20 +182,20 @@
                     </div>
                     <br>
                     <input id="inputBairro" style="width: 20%;">
-                    <br>
-                    <div class="about-jst-right">
-                        <br>
-                        <h4> Rua: </h4>
-                    </div>
-                    <br>
-                    <input id="inputRua" style="width: 20%;">
-                    <br>
+                    <br>                    
                     <div class="about-jst-right">
                         <br>
                         <h4> Número: </h4>
                     </div>
                     <br>
                     <input id="inputNumero" style="width: 20%;">
+                    <br>
+                    <div class="about-jst-right">
+                        <br>
+                        <h4> Estado: </h4>
+                    </div>
+                    <br>
+                    <input id="inputEstado" style="width: 20%;">
                     <br>
                     <div class="about-jst-right">
                         <br>
@@ -223,21 +233,21 @@
                         <h4> Data de Fundação: </h4>
                     </div>
                     <br>
-                    <input id="inputDataFund" style="width: 20%;">
+                    <input id="inputDataFund" type="date">
                     <br>
                     <div class="about-jst-right">
                         <br>
                         <h4> Descrição: </h4>
                     </div>
                     <br>
-                    <input id="inputDescricao" style="width: 20%;">
+                    <textarea id="inputDescricao" style="width: 30%;"></textarea>
                     <br>
                     <div class="about-jst-right">
                         <br>
                         <h4> Tags: </h4>
                     </div>
                     <br>
-                    <input id="inputTags" style="width: 20%;">
+                    <textarea id="inputTags" style="width: 30%;"></textarea>
                     <br><br>
                     <button onclick="cadastrarInstituicao()">Cadastrar</button>
                 </div> 
