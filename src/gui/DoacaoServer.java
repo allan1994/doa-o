@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import data.MongoDBDAO;
+import data.UsuarioDBDAO;
 
 /**
  * Servlet implementation class DoacaoServer
@@ -16,12 +17,14 @@ import data.MongoDBDAO;
 public class DoacaoServer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MongoDBDAO bd;
+	private UsuarioDBDAO bdUser;
 	
     /**
      * Default constructor. 
      */
     public DoacaoServer() {
     	bd = MongoDBDAO.getInstance();
+		bdUser = UsuarioDBDAO.getInstance();
     }
 
 	/**
@@ -41,9 +44,11 @@ public class DoacaoServer extends HttpServlet {
 			res = bd.getInstituicoesByName(request.getParameter("nome"));
 		} else if (action.equals("buscaPedidos")) {
 			res = bd.getInstituicoesByRequest(request.getParameter("pedido"));
+		} else if (action.equals("login")) {
+			res = bdUser.retrieve(request.getParameter("json"));
 		} else {
-			System.out.println("Ação inválida, " + action);
-			res = "Ação inválida";
+			System.out.println("Aï¿½ï¿½o invï¿½lida, " + action);
+			res = "Aï¿½ï¿½o invï¿½lida";
 		}
 		
 		System.out.println(request.getContextPath());
