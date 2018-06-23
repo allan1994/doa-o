@@ -11,6 +11,7 @@ import org.bson.codecs.EncoderContext;
 import org.bson.json.JsonMode;
 import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
+import org.bson.types.ObjectId;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -49,6 +50,8 @@ public class MongoDBDAO {
         for (int i = 0; i < results.size()-1; i++) {
         	resultStr += JSONtoString(results.get(i)) + ",";
         }
+        
+        if (!results.isEmpty()) resultStr += JSONtoString(results.get(results.size()-1));
         resultStr += "]";
         
 		return resultStr;
@@ -71,7 +74,9 @@ public class MongoDBDAO {
         String resultStr = "[";
         for (int i = 0; i < results.size()-1; i++) {
         	resultStr += JSONtoString(results.get(i)) + ",";
-        }
+        }        
+        
+        if (!results.isEmpty()) resultStr += JSONtoString(results.get(results.size()-1));
         resultStr += "]";
         
 		return resultStr;
@@ -89,6 +94,7 @@ public class MongoDBDAO {
         for (int i = 0; i < results.size()-1; i++) {
         	resultStr += JSONtoString(results.get(i)) + ",";
         }
+        if (!results.isEmpty()) resultStr += JSONtoString(results.get(results.size()-1));
         resultStr += "]";
         
 		return resultStr;

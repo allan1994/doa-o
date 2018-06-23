@@ -35,6 +35,15 @@ public class DoacaoServer extends HttpServlet {
 			res = "ok";
 		} else if (action.equals("listar")) {
 			res = bd.getInstituicoes();
+		} else if (action.equals("getInstituicao")) {
+			res = bd.getInstituicaoById(request.getParameter("id"));
+		} else if (action.equals("buscaNome")) {
+			res = bd.getInstituicoesByName(request.getParameter("nome"));
+		} else if (action.equals("buscaPedidos")) {
+			res = bd.getInstituicoesByRequest(request.getParameter("pedido"));
+		} else {
+			System.out.println("Ação inválida, " + action);
+			res = "Ação inválida";
 		}
 		
 		System.out.println(request.getContextPath());
