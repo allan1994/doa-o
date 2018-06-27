@@ -1,6 +1,52 @@
 <!DOCTYPE html>
 <html lang="br">
     <head>
+        <script>
+            //Criado por Allan
+            function buscar() {
+                const action = "buscaPedido";
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.open("POST", "DoacaoServer", true);
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        updateSearchFields(JSON.parse(swapObjectId(this.responseText)));
+                    }
+                };
+
+                var params = "action=" + action; // Modificado esta linha
+                console.log(params);
+
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send(params);
+            }
+
+            function swapObjectId(text) {
+                while (/ObjectId\(("\w*")\)/.test(text)) {
+                    const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+                    text = text.replace(/ObjectId\(("\w*")\)/, id);
+                }
+                console.log(text);
+                return text;
+            }
+
+            function updateSearchFields(jsonResult) {
+                let final = "";
+                for (let res of jsonResult) {
+                    //Editador por Allan
+                    final += "<tr>";
+                    final += "<td>" + res.nome + "</td>";
+                    final += "<td>" + res.cnpj + "</td>";
+                    final += "<td>" + res.telefone[0] + "</td>";
+                    final += "<td>" + res.telefone[1] + "</td>";
+                    final += "<td>" + res.email + "</td>";
+                    final += "<td><a href=instituicao.html?id=" + res._id + " style=\"color: #000;\"><i class=\"fa fa-trash\"></i></a></td>"
+                    final += "</tr>";
+                }
+                document.getElementById("resultsTable").innerHTML = final;
+            }
+        </script>
         <title>DoAção - Te ajudando a doar</title>
         <!--meta tags -->
         <meta charset="UTF-8">
@@ -201,55 +247,55 @@
         <!-- //js  working-->
         <script src="js/responsiveslides.min.js"></script>
         <script>
-                // You can also use "$(window).load(function() {"
-                $(function () {
-                    // Slideshow 4
-                    $("#slider4").responsiveSlides({
-                        auto: true,
-                        pager: false,
-                        nav: true,
-                        speed: 900,
-                        namespace: "callbacks",
-                        before: function () {
-                            $('.events').append("<li>before event fired.</li>");
-                        },
-                        after: function () {
-                            $('.events').append("<li>after event fired.</li>");
-                        }
-                    });
-
+            // You can also use "$(window).load(function() {"
+            $(function () {
+                // Slideshow 4
+                $("#slider4").responsiveSlides({
+                    auto: true,
+                    pager: false,
+                    nav: true,
+                    speed: 900,
+                    namespace: "callbacks",
+                    before: function () {
+                        $('.events').append("<li>before event fired.</li>");
+                    },
+                    after: function () {
+                        $('.events').append("<li>after event fired.</li>");
+                    }
                 });
+
+            });
         </script>
         <!--// banner-->
         <!--client carousel -->
         <script src="js/owl.carousel.js"></script>
         <script>
-                $(document).ready(function () {
-                    $("#owl-demo").owlCarousel({
-                        items: 1,
-                        itemsDesktop: [768, 1],
-                        itemsDesktopSmall: [414, 1],
-                        lazyLoad: true,
-                        autoPlay: true,
-                        navigation: true,
+            $(document).ready(function () {
+                $("#owl-demo").owlCarousel({
+                    items: 1,
+                    itemsDesktop: [768, 1],
+                    itemsDesktopSmall: [414, 1],
+                    lazyLoad: true,
+                    autoPlay: true,
+                    navigation: true,
 
-                        navigationText: false,
-                        pagination: true,
-
-                    });
+                    navigationText: false,
+                    pagination: true,
 
                 });
+
+            });
         </script>
         <!-- start-smoth-scrolling -->
         <script  src="js/move-top.js"></script>
         <script  src="js/easing.js"></script>
         <script >
-                jQuery(document).ready(function ($) {
-                    $(".scroll").click(function (event) {
-                        event.preventDefault();
-                        $('html,body').animate({scrollTop: $(this.hash).offset().top}, 1000);
-                    });
+            jQuery(document).ready(function ($) {
+                $(".scroll").click(function (event) {
+                    event.preventDefault();
+                    $('html,body').animate({scrollTop: $(this.hash).offset().top}, 1000);
                 });
+            });
         </script>
         <!-- start-smoth-scrolling -->
         <!-- here stars scrolling icon -->
