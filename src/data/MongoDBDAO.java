@@ -36,11 +36,14 @@ public class MongoDBDAO {
 		db = client.getDatabase("doacao");
 	}
 	
-	public void insertInstituicoes(String instituicaoJSON) {
+	public String insertInstituicoes(String instituicaoJSON) {
         MongoCollection<Document> coll = db.getCollection("instituicoes");
 		Document newInst = Document.parse(instituicaoJSON);
 		coll.insertOne(newInst);
+		ObjectId id = (ObjectId) newInst.get("_id");
+		
 		System.out.println("Inserindo no bd");
+		return id.toString();
 	}
 	
 	public String getInstituicoes() {
@@ -82,6 +85,23 @@ public class MongoDBDAO {
 		return resultStr;
 	}
 	
+	public String getInstituicoesByLocale(String name) {
+		MongoCollection<Document> coll = db.getCollection("instituicoes");
+		Pattern regex = Pattern.compile(name, Pattern.CASE_INSENSITIVE);
+		
+        List<Document> results = coll.find(eq("bairro", regex)).into(new ArrayList<Document>());
+
+        String resultStr = "[";
+        for (int i = 0; i < results.size()-1; i++) {
+        	resultStr += JSONtoString(results.get(i)) + ",";
+        }        
+        
+        if (!results.isEmpty()) resultStr += JSONtoString(results.get(results.size()-1));
+        resultStr += "]";
+        
+		return resultStr;
+	}
+	
 	public String getInstituicoesByRequest(String request) {
 		MongoCollection<Document> coll = db.getCollection("instituicoes");
 		Pattern regex = Pattern.compile(request, Pattern.CASE_INSENSITIVE);
@@ -99,6 +119,16 @@ public class MongoDBDAO {
         
 		return resultStr;
 	}
+	
+//	public void adicionarPedido(String id, String json) {
+//		MongoCollection<Document> coll = db.getCollection("instituicoes");
+//		Document newPedido = Document.parse(json);
+//		coll.updateOne(eq("_id", new ObjectId(id)), null);
+//		
+//		
+//		System.out.println("Inserindo no bd");
+//		
+//	}
 	
 	private String JSONtoString(Document document) {
 		JsonWriter jsonWriter = new JsonWriter(new StringWriter(),

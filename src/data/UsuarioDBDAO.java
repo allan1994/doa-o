@@ -22,7 +22,7 @@ public class UsuarioDBDAO {
 			System.out.println("Try connect");
 	        Class.forName("com.mysql.jdbc.Driver"); /* Aqui registra */
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/doacao_usuarios", "root", "senhasql");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/doacao", "root", "senhasql");
 			System.out.println("Conectado");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -38,13 +38,12 @@ public class UsuarioDBDAO {
 		try {
 			userObj = new JSONObject(userJSON);
 			System.out.println("Inserindo User...");
-			String sql = "INSERT INTO proprietario (tipoConta, idOng, usuario, senha, email) VALUES (?,?,?)";
+			String sql = "INSERT INTO usuarios (tipoConta, idOng, senha, email) VALUES (?,?,?,?)";
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, userObj.getString("tipoConta"));
 			stmt.setString(2, userObj.getString("idOng"));
-			stmt.setString(3, userObj.getString("usuario"));
-			stmt.setString(4, userObj.getString("senha"));
-			stmt.setString(5, userObj.getString("email"));
+			stmt.setString(3, userObj.getString("senha"));
+			stmt.setString(4, userObj.getString("email"));
 			System.out.println(stmt.toString());
 			
 			stmt.execute();
@@ -58,9 +57,9 @@ public class UsuarioDBDAO {
 		JSONObject userObj;
 		try {
 			userObj = new JSONObject(userJSON);
-			String sql = "SELECT * FROM usuarios WHERE usuario=? AND senha=?";
+			String sql = "SELECT * FROM usuarios WHERE email=? AND senha=?";
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, userObj.getString("usuario"));
+			stmt.setString(1, userObj.getString("email"));
 			stmt.setString(2, userObj.getString("senha"));
 			
 			ResultSet rs = stmt.executeQuery();

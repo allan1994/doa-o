@@ -2,15 +2,39 @@
 <html lang="br">
     <head>
         <script>
+            function cadastrarUsuario(id) {
+                console.log(id);
+                const obj = {};
+                obj.email = document.getElementById("inputEmail").value;
+                obj.senha = document.getElementById("inputSenha").value;
+                obj.tipoConta = "inst";
+                obj.idOng = id;
+
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.open("POST", "DoacaoServer", true);  
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        //window.location="index.html";
+                    }
+                };
+                
+                var params = "action=cadastrarUsuario&json=" + JSON.stringify(obj);
+                console.log(params);
+
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+                xhttp.send(params);
+            }
+
             function cadastrarInstituicao() {
-                const obj = {action: "cadastrar"}
+                const obj = {};
                 obj.nome = document.getElementById("inputNome").value;
                 obj.cnpj = document.getElementById("inputCNPJ").value;
                 obj.telefone = [];
                 obj.telefone.push(document.getElementById("inputTelefone1").value);
                 obj.telefone.push(document.getElementById("inputTelefone2").value);
                 obj.email = document.getElementById("inputEmail").value;
-                obj.nomeRede = document.getElementById("inputNomeRede").value;
                 obj.enderecoRede = document.getElementById("inputEnderecoRede").value;
                 obj.estado = document.getElementById("inputEstado").value;
                 obj.cidade = document.getElementById("inputCidade").value;
@@ -24,7 +48,6 @@
                 obj.dataFundacao = document.getElementById("inputDataFund").value;
                 obj.descricao = document.getElementById("inputDescricao").value;
                 obj.tags = document.getElementById("inputTags").value;
-                obj.senha = document.getElementById("inputSenha").value; //Campo senha *ALLAN
                 
                 console.log(obj);
 
@@ -34,7 +57,7 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(this.responseText);
-                        window.location="/index.html";
+                        cadastrarUsuario(this.responseText);
                     }
                 };
                 
@@ -147,23 +170,14 @@
                     <input id="inputEmail" type="email" style="width: 20%;">
                     <br><br>
                     <h3>Redes Sociais:</h3>
-                    <input id="inputNomeRede" value="facebook" hidden="">
-                    <br>
                     <div class="about-jst-right">
                         <br>
                         <h4> Facebook: </h4>
                     </div>
                     <br>
-                    <input id="inputEnderecoRede" style="width: 20%;">
-                    <input id="inputNomeRede" value="twitter" hidden="">
+                    <input id="inputEnderecoRede">
                     <br>
-                    <div class="about-jst-right">
-                        <br>
-                        <h4> Twitter: </h4>
-                    </div>
                     <br>
-                    <input id="inputEnderecoRede" style="width: 20%;">
-                    <br><br>
                     <h3>Localização:</h3>
                     <div class="about-jst-right">
                         <br>

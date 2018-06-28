@@ -1,53 +1,6 @@
 <!DOCTYPE html>
 <html lang="br">
     <head>
-        <script>
-            const url = new URL(document.location.href);
-            const id = url.searchParams.get("id");
-
-            const action = "getInstituicao";
-
-            var xhttp = new XMLHttpRequest();
-
-            xhttp.open("POST", "DoacaoServer", true);  
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.responseText);
-                    updateFields(JSON.parse(swapObjectId(this.responseText)));
-                }
-            };
-
-            var params = "action=" + action + "&id=" + id;
-            console.log(params);
-
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
-            xhttp.send(params);
-
-            function swapObjectId(text) {
-                while (/ObjectId\(("\w*")\)/.test(text)) {
-                    const id = /ObjectId\(("\w*")\)/.exec(text)[1];
-                    text = text.replace(/ObjectId\(("\w*")\)/, id);
-                }
-                console.log(text);
-                return text;
-            }
-
-            function updateFields(jsonResult) {
-                let telefones = "";
-                for (const tel of jsonResult.telefone) telefones += "<p>" + tel + "</p>";
-
-                document.getElementById("NomeInstituicao").innerHTML = jsonResult.nome;
-                document.getElementById("dataFund").innerHTML = jsonResult.dataFundacao;
-                document.getElementById("descricao").innerHTML = jsonResult.descricao
-                document.getElementById("telefone").innerHTML = telefones;
-                document.getElementById("email").innerHTML = jsonResult.email;
-                document.getElementById("nomeBanco").innerHTML = jsonResult.banco;
-                document.getElementById("agenciaBancaria").innerHTML = jsonResult.agencia;
-                document.getElementById("contaBancaria").innerHTML = jsonResult.conta;
-                document.getElementById("tags").innerHTML = jsonResult.tags;
-            }
-        </script>
-
         <title>DoAção - Te ajudando a doar</title>
         <!--meta tags -->
         <meta charset="UTF-8">
@@ -265,7 +218,7 @@
                     </div>
                 </div>
             </div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.9503398796587!2d-73.9940307!3d40.719109700000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a27e2f24131%3A0x64ffc98d24069f02!2sCANADA!5e0!3m2!1sen!2sin!4v1441710758555"></iframe>
+            <iframe id="mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.9503398796587!2d-73.9940307!3d40.719109700000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a27e2f24131%3A0x64ffc98d24069f02!2sCANADA!5e0!3m2!1sen!2sin!4v1441710758555"></iframe>
         </div>
         <div class="footer">
             <div class="container">
@@ -372,3 +325,50 @@
         <!-- //bootstrap working-->
     </body>
 </html>
+
+<script>
+    const url = new URL(document.location.href);
+    const id = url.searchParams.get("id");
+
+    const action = "getInstituicao";
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST", "DoacaoServer", true);  
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            updateFields(JSON.parse(swapObjectId(this.responseText)));
+        }
+    };
+
+    var params = "action=" + action + "&id=" + id;
+    console.log(params);
+
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+    xhttp.send(params);
+
+    function swapObjectId(text) {
+        while (/ObjectId\(("\w*")\)/.test(text)) {
+            const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+            text = text.replace(/ObjectId\(("\w*")\)/, id);
+        }
+        console.log(text);
+        return text;
+    }
+
+    function updateFields(jsonResult) {
+        let telefones = "";
+        for (const tel of jsonResult.telefone) telefones += "<p>" + tel + "</p>";
+
+        document.getElementById("NomeInstituicao").innerHTML = jsonResult.nome;
+        document.getElementById("dataFund").innerHTML = jsonResult.dataFundacao;
+        document.getElementById("descricao").innerHTML = jsonResult.descricao
+        document.getElementById("telefone").innerHTML = telefones;
+        document.getElementById("email").innerHTML = jsonResult.email;
+        document.getElementById("nomeBanco").innerHTML = jsonResult.banco;
+        document.getElementById("agenciaBancaria").innerHTML = jsonResult.agencia;
+        document.getElementById("contaBancaria").innerHTML = jsonResult.conta;
+        document.getElementById("tags").innerHTML = jsonResult.tags;
+    }
+</script>

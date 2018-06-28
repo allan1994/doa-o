@@ -1,52 +1,6 @@
 <!DOCTYPE html>
 <html lang="br">
     <head>
-        <script>
-            //Criado por Allan
-            function buscar() {
-                const action = "buscaPedido";
-                var xhttp = new XMLHttpRequest();
-
-                xhttp.open("POST", "DoacaoServer", true);
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
-                        updateSearchFields(JSON.parse(swapObjectId(this.responseText)));
-                    }
-                };
-
-                var params = "action=" + action; // Modificado esta linha
-                console.log(params);
-
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send(params);
-            }
-
-            function swapObjectId(text) {
-                while (/ObjectId\(("\w*")\)/.test(text)) {
-                    const id = /ObjectId\(("\w*")\)/.exec(text)[1];
-                    text = text.replace(/ObjectId\(("\w*")\)/, id);
-                }
-                console.log(text);
-                return text;
-            }
-
-            function updateSearchFields(jsonResult) {
-                let final = "";
-                for (let res of jsonResult) {
-                    //Editador por Allan
-                    final += "<tr>";
-                    final += "<td>" + res.nome + "</td>";
-                    final += "<td>" + res.cnpj + "</td>";
-                    final += "<td>" + res.telefone[0] + "</td>";
-                    final += "<td>" + res.telefone[1] + "</td>";
-                    final += "<td>" + res.email + "</td>";
-                    final += "<td><a href=instituicao.html?id=" + res._id + " style=\"color: #000;\"><i class=\"fa fa-trash\"></i></a></td>"
-                    final += "</tr>";
-                }
-                document.getElementById("resultsTable").innerHTML = final;
-            }
-        </script>
         <title>DoAção - Te ajudando a doar</title>
         <!--meta tags -->
         <meta charset="UTF-8">
@@ -115,7 +69,7 @@
             <br><br>
             <div class="container">
                 <div class="col-md-12">
-                    <table style="width: 100%;">
+                    <table id="resultsTable" style="width: 100%;">
                         <tr>
                             <th>Instituição</th>
                             <th>CNPJ</th>
@@ -320,3 +274,50 @@
         <!-- //bootstrap working-->
     </body>
 </html>
+<script>
+    function buscar() {
+        const action = "buscaPedido";
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.open("POST", "DoacaoServer", true);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                updateSearchFields(JSON.parse(swapObjectId(this.responseText)));
+            }
+        };
+
+        var params = "action=" + action; // Modificado esta linha
+        console.log(params);
+
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+    }
+
+    function swapObjectId(text) {
+        while (/ObjectId\(("\w*")\)/.test(text)) {
+            const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+            text = text.replace(/ObjectId\(("\w*")\)/, id);
+        }
+        console.log(text);
+        return text;
+    }
+
+    function updateSearchFields(jsonResult) {
+        let final = "";
+        for (let res of jsonResult) {
+            //Editador por Allan
+            final += "<tr>";
+            final += "<td>" + res.nome + "</td>";
+            final += "<td>" + res.cnpj + "</td>";
+            final += "<td>" + res.telefone[0] + "</td>";
+            final += "<td>" + res.telefone[1] + "</td>";
+            final += "<td>" + res.email + "</td>";
+            final += "<td><a href=instituicao.html?id=" + res._id + " style=\"color: #000;\"><i class=\"fa fa-trash\"></i></a></td>"
+            final += "</tr>";
+        }
+        document.getElementById("resultsTable").innerHTML = final;
+    }
+
+    buscar();
+</script>

@@ -70,26 +70,24 @@
                         <h4> Nova necessidade: </h4>
                     </div>
                     <br>
-                    <form id="cadastro-necessidade">
-                        <p>Nome:</p>
-                        <input id="nome" type="text">
-                        <p>Data Limite:</p>
-                        <input id="data-limite" type="date">
-                        <p>Quantidade:</p>
-                        <input id="quantidade" type="number">
-                        <p>Medida:</p>
-                        <input id="medida" type="text">
-                        <p>Descrição:</p>
-                        <input id="descricao" type="text"> 
-                        <br><br>
-                        <input type="submit" value="Adicionar">
-                    </form>                    
+                    <p>Nome:</p>
+                    <input id="nome" type="text">
+                    <p>Data Limite:</p>
+                    <input id="data-limite" type="date">
+                    <p>Quantidade:</p>
+                    <input id="quantidade" type="number">
+                    <p>Medida:</p>
+                    <input id="medida" type="text">
+                    <p>Descrição:</p>
+                    <input id="descricao" type="text"> 
+                    <br><br>
+                    <button onclick="cadastrarPedido()">Adicionar</button>
                 </div> 
             </div>
             <br><br>
             <div class="container">
                 <div class="col-md-12">
-                    <table style="width: 100%;">
+                    <table id="resultsTable" style="width: 100%;">
                         <tr>
                             <th>Nome</th>
                             <th>Data Limite</th>
@@ -238,3 +236,77 @@
         <!-- //bootstrap working-->
     </body>
 </html>
+
+<script>
+    const url = new URL(document.location.href);
+    const id = url.searchParams.get("id");
+
+    const action = "getInstituicao";
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST", "DoacaoServer", true);  
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            updateFields(JSON.parse(swapObjectId(this.responseText)));
+        }
+    };
+
+    var params = "action=" + action + "&id=" + id;
+    console.log(params);
+
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+    xhttp.send(params);
+
+    function swapObjectId(text) {
+        while (/ObjectId\(("\w*")\)/.test(text)) {
+            const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+            text = text.replace(/ObjectId\(("\w*")\)/, id);
+        }
+        console.log(text);
+        return text;
+    }
+
+    function updateFields(jsonResult) {
+        let final = "";
+        for (let res of jsonResult.pedidos) {
+            final += "<tr>";
+            final += "<td>" + res.nome + "</td>";
+            final += "<td>" + res.dataLimite + "</td>";
+            final += "<td>" + res.quantidade + "</td>";
+            final += "<td>" + res.medida + "</td>";
+            final += "<td>" + res.descricao + "</td>";
+            final += "</tr>";
+        }
+
+        document.getElementById("resultsTable").innerHTML = final;
+    }
+
+    function cadastrarPedido() {
+        const obj = {};
+        obj.nome = document.getElementById("nome").value;
+        obj.dataLimite = document.getElementById("data-limite").value;
+        obj.quantidade = document.getElementById("quantidade").value;
+        obj.medida = document.getElementById("medida").value;
+        obj.descricao = document.getElementById("descricao").value;
+
+        const action = "adicionarPedido";
+
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.open("POST", "DoacaoServer", true);  
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                window.location = "admin_instituicao_necessidades.html?id=" + id;
+            }
+        };
+
+        var params = "action=" + action + "&id=" + id + "&json=" + JSON.stringify(obj);
+        console.log(params);
+
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+        xhttp.send(params);
+    }
+</script>

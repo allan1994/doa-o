@@ -64,7 +64,7 @@
                     <div class="aboutright">
                         <h4> Bem vindo </h4>
                         <br>
-                        <h4 id="nome-instituicao"> NOME DA INSTITUIÇÃO </h4>
+                        <div id="nome-instituicao"></div>
                     </div>                    
                 </div>                
             </div>
@@ -78,7 +78,7 @@
                     <div class="col-md-3 left-icon-grid">
                         <span class="fa fa-address-card banner-icon" aria-hidden="true"></span>
                     </div>
-                    <a href="#">
+                    <a id="sobreLink" href="#">
                     <div class="col-md-9 white-shadow">
                         <h4>Sobre</h4>
                         <p>Edite o Sobre</p>
@@ -102,9 +102,9 @@
                     <div class="col-md-3 left-icon-grid">
                         <span class="fa fa-futbol-o banner-icon" aria-hidden="true"></span>
                     </div>
-                    <a href="#">
+                    <a id="necessidadeLink" href="#">
                     <div class="col-md-9 white-shadow">
-                        <h4>Necesidade</h4>
+                        <h4>Necessidade</h4>
                         <p>Edite as Necessidades</p>
                         <div class="clearfix"> </div>
                     </div>
@@ -219,3 +219,42 @@
         <!-- //bootstrap working-->
     </body>
 </html>
+
+<script>
+    const url = new URL(document.location.href);
+    const id = url.searchParams.get("id");
+
+    const action = "getInstituicao";
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST", "DoacaoServer", true);  
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            updateFields(JSON.parse(swapObjectId(this.responseText)));
+        }
+    };
+
+    var params = "action=" + action + "&id=" + id;
+    console.log(params);
+
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");       
+    xhttp.send(params);
+
+    function swapObjectId(text) {
+        while (/ObjectId\(("\w*")\)/.test(text)) {
+            const id = /ObjectId\(("\w*")\)/.exec(text)[1];
+            text = text.replace(/ObjectId\(("\w*")\)/, id);
+        }
+        console.log(text);
+        return text;
+    }
+
+    function updateFields(jsonResult) {
+        document.getElementById("nome-instituicao").innerHTML = "<a href=\"instituicao.html?id=\"" + id + "><h4>" + jsonResult.nome "</h4></a>";
+
+        document.getElementById("sobreLink").href = "admin_instituicao_sobre.html?id=" + id;
+        document.getElementById("necessidadeLink").href = "admin_instituicao_necessidade.html?id=" + id;
+    }
+</script>

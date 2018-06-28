@@ -32,9 +32,11 @@ public class DoacaoServer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		String res = "";
+		String res;
 		if (action.equals("cadastrar")) {
-			bd.insertInstituicoes(request.getParameter("json"));
+			res = bd.insertInstituicoes(request.getParameter("json"));
+		} else if (action.equals("cadastrarUsuario")) {
+			bdUser.insert(request.getParameter("json"));
 			res = "ok";
 		} else if (action.equals("listar")) {
 			res = bd.getInstituicoes();
@@ -44,6 +46,11 @@ public class DoacaoServer extends HttpServlet {
 			res = bd.getInstituicoesByName(request.getParameter("nome"));
 		} else if (action.equals("buscaPedidos")) {
 			res = bd.getInstituicoesByRequest(request.getParameter("pedido"));
+		} else if (action.equals("buscaLocal")) {
+			res = bd.getInstituicoesByLocale(request.getParameter("local"));
+		} else if (action.equals("adicionarPedido")) {
+			// bd.adicionarPedido(request.getParameter("id"), request.getParameter("json"));
+			res = "ok";
 		} else if (action.equals("login")) {
 			res = bdUser.retrieve(request.getParameter("json"));
 		} else {
