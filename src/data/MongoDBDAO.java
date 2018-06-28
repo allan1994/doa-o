@@ -13,9 +13,11 @@ import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 import org.bson.types.ObjectId;
 
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase; 
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
 
 import static com.mongodb.client.model.Accumulators.*;
 import static com.mongodb.client.model.Aggregates.*;
@@ -61,11 +63,16 @@ public class MongoDBDAO {
 	}
 	
 	public String getInstituicaoById(String id) {
-		MongoCollection<Document> coll = db.getCollection("instituicoes");
-        List<Document> results = coll.find(eq("_id", new ObjectId(id))).into(new ArrayList<Document>());
-        String resultStr = JSONtoString(results.get(0));
-        
-		return resultStr;
+		try {
+			MongoCollection<Document> coll = db.getCollection("instituicoes");
+	        List<Document> results = coll.find(eq("_id", new ObjectId(id))).into(new ArrayList<Document>());
+	        String resultStr = JSONtoString(results.get(0));
+	        return resultStr;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
 	}
 	
 	public String getInstituicoesByName(String name) {
@@ -120,15 +127,14 @@ public class MongoDBDAO {
 		return resultStr;
 	}
 	
-//	public void adicionarPedido(String id, String json) {
-//		MongoCollection<Document> coll = db.getCollection("instituicoes");
-//		Document newPedido = Document.parse(json);
-//		coll.updateOne(eq("_id", new ObjectId(id)), null);
-//		
-//		
-//		System.out.println("Inserindo no bd");
-//		
-//	}
+	public void adicionarPedido(String id, String json) {		
+		MongoCollection<Document> coll = db.getCollection("instituicoes");
+		Document newPedido = Document.parse(json);
+		coll.updateOne(eq("_id", new ObjectId(id)), Updates.addToSet("pedidos", newPedido));
+		
+		
+		System.out.println("Inserindo no bd");
+	}
 	
 	private String JSONtoString(Document document) {
 		JsonWriter jsonWriter = new JsonWriter(new StringWriter(),

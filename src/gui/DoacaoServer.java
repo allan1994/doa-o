@@ -51,7 +51,7 @@ public class DoacaoServer extends HttpServlet {
 		} else if (action.equals("buscaLocal")) {
 			res = bd.getInstituicoesByLocale(request.getParameter("local"));
 		} else if (action.equals("adicionarPedido")) {
-			// bd.adicionarPedido(request.getParameter("id"), request.getParameter("json"));
+			bd.adicionarPedido(request.getParameter("id"), request.getParameter("json"));
 			res = "ok";
 		} else if (action.equals("login")) {
 			res = bdUser.retrieve(request.getParameter("json"));
