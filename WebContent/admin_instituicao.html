@@ -252,7 +252,7 @@
     }
 
     function updateFields(jsonResult) {
-        document.getElementById("nome-instituicao").innerHTML = "<a href=\"instituicao.html?id=\"" + id + "><h4>" + jsonResult.nome "</h4></a>";
+        document.getElementById("nome-instituicao").innerHTML = "<a href=\"instituicao.html?id=" + id + "\"><h4>" + jsonResult.nome + "</h4></a>";
 
         document.getElementById("sobreLink").href = "admin_instituicao_sobre.html?id=" + id;
         document.getElementById("necessidadeLink").href = "admin_instituicao_necessidade.html?id=" + id;

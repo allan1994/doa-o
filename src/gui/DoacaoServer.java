@@ -33,7 +33,9 @@ public class DoacaoServer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String res;
-		if (action.equals("cadastrar")) {
+		if (action == null) {
+			res = "";
+		} else if (action.equals("cadastrar")) {
 			res = bd.insertInstituicoes(request.getParameter("json"));
 		} else if (action.equals("cadastrarUsuario")) {
 			bdUser.insert(request.getParameter("json"));
